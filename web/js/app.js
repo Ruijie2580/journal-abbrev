@@ -367,6 +367,40 @@
     } catch (e) { /* 存储不可用时静默降级，仅失去持久化 */ }
   }
 
+  function makeRowBtn(label, extraClass, title, handler) {
+    var btn = document.createElement('button');
+    btn.className = 'row-btn' + (extraClass ? ' ' + extraClass : '');
+    btn.type = 'button';
+    btn.textContent = label;
+    if (title) btn.title = title;
+    btn.addEventListener('click', handler);
+    return btn;
+  }
+
+  function removeManualRow(row) {
+    var idx = manualRows.indexOf(row);
+    if (idx === -1) return false;
+    manualRows.splice(idx, 1);
+    saveManualRows();
+    renderManual();
+    return true;
+  }
+
+  function deleteManualRow(row) {
+    if (removeManualRow(row)) showToast('已删除：' + row[0], 'success');
+  }
+
+  function undoManualRow(row) {
+    if (!removeManualRow(row)) return;
+    // 原名回填到输入框：保留已输入内容，另起一行追加
+    var cur = manualInput.value;
+    manualInput.value = (!cur.length || /[\r\n]$/.test(cur)) ? cur + row[0] : cur + '\n' + row[0];
+    manualInput.focus();
+    var end = manualInput.value.length;
+    if (manualInput.setSelectionRange) manualInput.setSelectionRange(end, end);
+    showToast('已撤销，期刊原名已回填到输入框：' + row[0], 'success');
+  }
+
   function renderManual() {
     manualBody.innerHTML = '';
     manualRows.forEach(function (row, idx) {
@@ -374,18 +408,21 @@
       appendCell(tr, String(idx + 1));
       appendCell(tr, row[0]);
       appendCell(tr, row[1]);
-      var btn = document.createElement('button');
-      btn.className = 'row-copy';
-      btn.type = 'button';
-      btn.textContent = '复制';
-      btn.disabled = !ltwaReady;
-      btn.addEventListener('click', function () {
+      var ops = document.createElement('div');
+      ops.className = 'row-btns';
+      var copyBtn = makeRowBtn('复制', '', '复制缩写到剪贴板', function () {
         copyText(row[1]).then(function (ok) {
           showToast(ok ? '已复制缩写：' + row[1] : '复制失败，请手动选择文本复制。',
             ok ? 'success' : 'error');
         });
       });
-      appendCell(tr, '').appendChild(btn);
+      copyBtn.disabled = !ltwaReady;
+      ops.appendChild(copyBtn);
+      ops.appendChild(makeRowBtn('删除', 'row-btn-del', '从列表中删除这一条',
+        function () { deleteManualRow(row); }));
+      ops.appendChild(makeRowBtn('撤销', 'row-btn-undo', '删除这一条，并把期刊原名回填到输入框',
+        function () { undoManualRow(row); }));
+      appendCell(tr, '').appendChild(ops);
       manualBody.appendChild(tr);
     });
     var has = manualRows.length > 0;

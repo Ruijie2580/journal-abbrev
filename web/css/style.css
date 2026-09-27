@@ -272,7 +272,7 @@ body {
 .data-table tbody tr:hover { background: var(--primary-soft); }
 .data-table tbody tr:last-child td { border-bottom: none; }
 .col-index { width: 44px; }
-.col-op { width: 76px; }
+.col-op { width: 200px; }
 
 /* ===== 状态徽章 ===== */
 .status-badge {
@@ -308,8 +308,9 @@ body {
   border-radius: 10px;
 }
 
-/* ===== 行内复制按钮 ===== */
-.row-copy {
+/* ===== 行内操作按钮（复制 / 删除 / 撤销） ===== */
+.row-btns { display: flex; gap: 6px; }
+.row-btn {
   font: inherit;
   font-size: 12.5px;
   font-weight: 600;
@@ -322,8 +323,12 @@ body {
   transition: all 0.15s ease;
   white-space: nowrap;
 }
-.row-copy:hover:not(:disabled) { background: var(--primary); border-color: var(--primary); color: #fff; }
-.row-copy:disabled { opacity: 0.5; cursor: not-allowed; }
+.row-btn:hover:not(:disabled) { background: var(--primary); border-color: var(--primary); color: #fff; }
+.row-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.row-btn-del { color: var(--danger); border-color: var(--danger-border); }
+.row-btn-del:hover:not(:disabled) { background: var(--danger); border-color: var(--danger); color: #fff; }
+.row-btn-undo { color: var(--text-2); }
+.row-btn-undo:hover:not(:disabled) { background: var(--text-2); border-color: var(--text-2); color: #fff; }
 
 /* ===== 手动输入 textarea ===== */
 .manual-input {
