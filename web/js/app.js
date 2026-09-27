@@ -7,8 +7,6 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'journal-abbrev-helper.manual.v1';
-
   /* ---------- DOM 引用 ---------- */
   var mask, maskSpinner, maskText, maskErrorMsg, maskRetry;
   var toastContainer;
@@ -347,26 +345,7 @@
   }
 
   /* ---------- 手动输入 ---------- */
-  function loadManualRows() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
-      var arr = JSON.parse(raw);
-      if (!Array.isArray(arr)) return [];
-      return arr
-        .filter(function (r) { return Array.isArray(r) && r.length >= 2; })
-        .map(function (r) { return [String(r[0]), String(r[1])]; });
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function saveManualRows() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(manualRows));
-    } catch (e) { /* 存储不可用时静默降级，仅失去持久化 */ }
-  }
-
+  // 结果列表只存在于内存中：刷新或重新打开页面即清空，不做任何本地持久化。
   function makeRowBtn(label, extraClass, title, handler) {
     var btn = document.createElement('button');
     btn.className = 'row-btn' + (extraClass ? ' ' + extraClass : '');
@@ -381,7 +360,6 @@
     var idx = manualRows.indexOf(row);
     if (idx === -1) return false;
     manualRows.splice(idx, 1);
-    saveManualRows();
     renderManual();
     return true;
   }
@@ -448,7 +426,6 @@
       return;
     }
     results.forEach(function (pair) { manualRows.push([pair[0], pair[1]]); });
-    saveManualRows();
     renderManual();
     manualInput.value = '';
     showToast('已生成 ' + results.length + ' 条缩写，结果已追加到列表。', 'success');
@@ -469,7 +446,6 @@
         return;
       }
       manualRows = [];
-      saveManualRows();
       renderManual();
       showToast('列表已清空。', 'success');
     });
@@ -504,7 +480,6 @@
     bindBibEvents();
     bindManualEvents();
     maskRetry.addEventListener('click', initLtwa);
-    manualRows = loadManualRows();
     renderManual();
     initLtwa();
   }

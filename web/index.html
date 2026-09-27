@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>期刊缩写助手 · ISO 4 / LTWA</title>
   <meta name="description" content="基于 ISO 4 规则与 LTWA（ISSN）词表的期刊名缩写工具，纯前端运行，数据不出浏览器。">
+  <meta name="theme-color" content="#f3f5fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234f46e5'/%3E%3Cstop offset='1' stop-color='%232563eb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='43' font-size='30' font-weight='bold' text-anchor='middle' fill='%23ffffff' font-family='Georgia, serif'%3EJ.%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -110,7 +112,7 @@
             <h2 class="card-title">缩写结果</h2>
             <span id="manual-count" class="count-badge">共 0 条</span>
           </div>
-          <p id="manual-empty" class="empty-state">还没有缩写记录。在上方输入期刊全名并点击「生成缩写」，结果会追加到此处，并自动保存在本浏览器中（刷新页面不丢失）。</p>
+          <p id="manual-empty" class="empty-state">还没有缩写记录。在上方输入期刊全名并点击「生成缩写」，结果会追加到此处；列表只在本次打开期间有效，刷新页面即清空。</p>
           <div class="table-wrap" id="manual-table-wrap" hidden>
             <table class="data-table">
               <thead>
@@ -130,7 +132,7 @@
   </div>
 
   <footer class="site-footer">
-    <p>缩写规则：ISO 4，词表：LTWA（ISSN） · 全部计算在本地浏览器中完成</p>
+    <p>缩写规则：ISO 4，词表：LTWA（ISSN）</p>
   </footer>
 
   <script src="js/abbreviator.js"></script>
