@@ -1,0 +1,7 @@
+gradio>=6.28.0
+bibtexparser>=2.0.1
+iso4>=0.0.2
+
+# iso4 依赖 NLTK wordnet 语料库（一次性下载，之后离线可用）：
+#   python -m nltk.downloader wordnet
+# 若下载被网络拦截，可手动获取 wordnet.zip 放入 nltk_data/corpora/ 目录。

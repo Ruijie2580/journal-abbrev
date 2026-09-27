@@ -1,0 +1,5 @@
+/data/ltwa.json
+  Cache-Control: public, max-age=604800, immutable
+  X-Content-Type-Options: nosniff
+/*
+  X-Content-Type-Options: nosniff
